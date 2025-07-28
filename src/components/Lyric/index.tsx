@@ -148,12 +148,14 @@ const Lyric: FC<{ lyric: string, currentTime?: number }> = ({ lyric, currentTime
         <section className={styles.song_info}>
           <img src={currentMusic.posterUrl} alt={currentMusic.name} />
           <div className={styles.lyric_title}>
-            <span>歌曲名:</span>
-            <span>{currentMusic.name}</span>
+            <p>
+              歌曲名:<span>{currentMusic.name}</span>
+            </p>
           </div>
           <div className={styles.lyric_artist}>
-            <span>歌手:</span>
-            <span>{currentMusic.singer}</span>
+            <p>
+              歌手:<span>{currentMusic.singer}</span>
+            </p>
           </div>
         </section>
         <div className={styles.lyric_wrapper} ref={lyricContainerRef}>
@@ -164,9 +166,13 @@ const Lyric: FC<{ lyric: string, currentTime?: number }> = ({ lyric, currentTime
                   key={`${line.time}-${index}`}
                   className={`${styles.lyric_line} ${
                     index === currentLineIndex ? styles.active : ""
-                  } ${isJumping && index === currentLineIndex ? styles.jumping : ""}`}
+                  } ${
+                    isJumping && index === currentLineIndex
+                      ? styles.jumping
+                      : ""
+                  }`}
                   onClick={() => {
-                      handleClickLyric(line.time, index);
+                    handleClickLyric(line.time, index);
                   }}
                 >
                   {line.text}

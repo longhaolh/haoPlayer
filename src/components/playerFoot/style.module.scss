@@ -25,31 +25,40 @@
         gap: 1rem;
         flex-shrink: 0;
     }
+    .curTime,.duration{
+        font-size: 14px;
+        width: 40px;
+        color: #e6e6e6;
+    }
+    .curTime{
+        margin-left: 2rem;
+    }
+    .duration{
+        margin-right: 2rem;
+    }
     .foot_center{
         color: #e6e6e6;
         display: flex;
-        flex: 1;
+        width: calc(100vw - 560px);
         justify-content: center;
         align-items: center;
-        margin: 0 2rem;
-        .curTime,.duration{
-            font-size: 14px;
-            width: 40px;
-        }
+        margin: 0;
+        height: 1rem;
+        cursor: pointer;
         .play_line{
             width: 100%;
             height: 2px;
             margin: 0 5px;
-            background-color: hsla(0,0%,88.2%,.8);
+            background-color: rgba($color: #000000, $alpha: 0.1);
             display: flex;
             align-items: center;
             flex: 1;
             position: relative;
             border-radius: 2px;
-            cursor: pointer;
             &_progress{
                 height: 2px;
-                background-color: #fff;
+                background-color: hsla(0,0%,88.2%,.8);
+                transition: all .3s;
             }
             &_dot{
                 position: absolute;
@@ -58,32 +67,35 @@
                 height: 10px;
                 border-radius: 5px;
                 background-color: #fff;
+                transition: all .3s;
             }
         }
         
     }
     .foot_right{
         width: 250px;
+        flex-shrink: 0;
         .volumn{
-            width: 40%;
-            height: 100%;
+            width: 100px;
+            height: 1rem;
             display: flex;
             justify-content: center;
             align-items: center;
+            cursor: pointer;
+            transform: translateX(-10px);
             &_line{
-                width: 100%;
+                width: 110px;
                 height: 2px;
                 background-color: #aaa;
                 border-radius: 1px;
-                transform: translateX(-10px);
                 position: relative;
-                cursor: pointer;
                 &_progress{
                     height: 2px;
                     background-color: #e6e6e6;
                     display: flex;
                     justify-content: flex-end;
                     overflow: visible;
+                    transition: all .3s;
                 }
                 &_dot{
                     position: absolute;
@@ -93,6 +105,7 @@
                     border-radius: 5px;
                     background-color: #fff;
                     cursor: pointer;
+                    transition: all .3s;
                 }
             }
         }

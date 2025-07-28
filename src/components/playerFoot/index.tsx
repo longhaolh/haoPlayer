@@ -9,6 +9,7 @@ import {
   setDuration,
   setCurrentTime,
   setPlayMode,
+  setShow,
 } from "@/store/modules/player";
 const PlayerFoot: FC = () => {
   const dispatch = useDispatch();
@@ -17,21 +18,17 @@ const PlayerFoot: FC = () => {
   const playLineRef = useRef<HTMLDivElement>(null);
   const volumnLineRef = useRef<HTMLDivElement>(null);
   const [mute, setMute] = useState(false);
-  
-  // @ts-expect-error 忽略ts错误
-  const isPlay = useSelector((state) => state.player.isPlay);
-  // @ts-expect-error 忽略ts错误
-  const currentMusic = useSelector((state) => state.player.currentMusic);
-  // @ts-expect-error 忽略ts错误
-  const musicList = useSelector((state) => state.player.musicList);
-  // @ts-expect-error 忽略ts错误
-  const volume = useSelector((state) => state.player.volume);
-  // @ts-expect-error 忽略ts错误
-  const currentTime = useSelector((state) => state.player.currentTime);
-  // @ts-expect-error 忽略ts错误
-  const duration = useSelector((state) => state.player.duration);
-  // @ts-expect-error 忽略ts错误
-  const playMode = useSelector((state) => state.player.playMode);
+
+  const {
+    isPlay,
+    currentMusic,
+    musicList,
+    volume,
+    currentTime,
+    duration,
+    playMode,
+    show,
+  } = useSelector((state) => state.player);
 
   const timeFormat = (time: number) => {
     return `${
@@ -48,12 +45,10 @@ const PlayerFoot: FC = () => {
   //   初始化播放器
   useEffect(() => {
     const audio = document.getElementById("audio") as HTMLAudioElement;
-
+    dispatch(setShow(false));
     const handleMetadata = () => {
       dispatch(setDuration(audio.duration));
     };
-    // 处理音量变化
-    dispatch(setVolume(volume));
     const handleTimeUpdate = () => {
       dispatch(setCurrentTime(audio.currentTime));
     };
@@ -81,11 +76,17 @@ const PlayerFoot: FC = () => {
   useEffect(() => {
     if (currentMusic && currentMusic.songUrl) {
       const audio = document.getElementById("audio") as HTMLAudioElement;
-      
+
+      // 更准确地比较URL，避免因为协议或其他差异导致的误判
+      const currentSrc = audio.src;
+      const newSrc = currentMusic.songUrl;
+      const normalizeUrl = (url: string) =>
+        url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+
       // 只有当音频源真正改变时才更新
-      if (audio.src !== currentMusic.songUrl) {
+      if (!currentSrc || normalizeUrl(currentSrc) !== normalizeUrl(newSrc)) {
         audio.src = currentMusic.songUrl;
-        
+
         // 如果当前是播放状态，则自动播放新歌曲
         if (isPlay) {
           // 等待音频加载完成后播放
@@ -94,16 +95,20 @@ const PlayerFoot: FC = () => {
               console.error("切换歌曲后自动播放失败:", err);
               dispatch(setIsPlay(false));
             });
-            audio.removeEventListener('canplay', handleCanPlay);
+            audio.removeEventListener("canplay", handleCanPlay);
           };
-          
-          audio.addEventListener('canplay', handleCanPlay);
+
+          audio.addEventListener("canplay", handleCanPlay);
         }
       }
     }
-  }, [currentMusic?.id, isPlay, dispatch]);
+  }, [currentMusic?.id, dispatch]);
 
-  // 变量已在组件顶部定义
+  // 音量控制
+  useEffect(() => {
+    const audio = document.getElementById("audio") as HTMLAudioElement;
+    audio.volume = volume;
+  }, [volume]);
   /**
    * 播放/暂停控制
    */
@@ -193,7 +198,7 @@ const PlayerFoot: FC = () => {
    */
   const handleVolume = (volumeNum: number, mute?: boolean) => {
     const audio = document.getElementById("audio") as HTMLAudioElement;
-    
+
     // 直接设置音量，不保存和恢复播放进度
     if (mute) {
       setMute(true);
@@ -211,17 +216,17 @@ const PlayerFoot: FC = () => {
     // 阻止事件冒泡，避免触发其他点击事件
     e.stopPropagation();
     e.preventDefault();
-    
+
     // 确保volumnLineRef.current不为null
     if (!volumnLineRef.current) return;
-    
+
     const clientX = e.nativeEvent.offsetX;
     const clientWidth = volumnLineRef.current.clientWidth;
-    
+
     // 确保音量值在0-1之间
     let volumeNum = clientX / clientWidth;
     volumeNum = Math.max(0, Math.min(1, volumeNum));
-    
+
     // 调整音量
     handleVolume(volumeNum);
   };
@@ -232,36 +237,36 @@ const PlayerFoot: FC = () => {
     // 阻止事件冒泡和默认行为
     e.stopPropagation();
     e.preventDefault();
-    
+
     // 确保playLineRef.current不为null
     if (!playLineRef.current) return;
-    
+
     // 获取点击位置相对于进度条的偏移量
     const rect = playLineRef.current.getBoundingClientRect();
     const offsetX = e.clientX - rect.left;
     const clientWidth = playLineRef.current.clientWidth;
-    
+
     // 计算进度比例（确保在0-1之间）
     const progressNum = Math.max(0, Math.min(1, offsetX / clientWidth));
-    
+
     // 更新Redux状态和音频元素
     dispatch(setCurrentTime(progressNum * duration));
     const audio = document.getElementById("audio") as HTMLAudioElement;
-    
+
     // 保存当前音量和播放状态
     const currentVolume = audio.volume;
     const wasPlaying = isPlay && !audio.paused;
-    
+
     // 设置新的播放位置
     audio.currentTime = progressNum * duration;
-    
+
     // 确保音量不变
     audio.volume = currentVolume;
-    
+
     // 如果之前是播放状态，确保继续播放
     if (wasPlaying) {
-      audio.play().catch(err => {
-        console.error('恢复播放失败:', err);
+      audio.play().catch((err) => {
+        console.error("恢复播放失败:", err);
       });
     }
   };
@@ -284,11 +289,11 @@ const PlayerFoot: FC = () => {
         ) : (
           <svg
             className="icon"
-            style={{ width: "39px", height: "39px" }}
+            style={{ width: "38px", height: "38px" }}
             aria-hidden="true"
             onClick={handelPlay}
           >
-            <use xlinkHref="#icon-play"></use>
+            <use xlinkHref="#icon-icon_play"></use>
           </svg>
         )}
         <svg
@@ -301,17 +306,13 @@ const PlayerFoot: FC = () => {
           <use xlinkHref="#icon-next"></use>
         </svg>
       </section>
-      <section className={styles.foot_center}>
-        <span className={styles.curTime}>{timeFormat(currentTime)}</span>
-        <div
-          className={styles.play_line}
-          ref={playLineRef}
-          onClick={handleProgress}
-          onMouseDown={(e) => {
-            // 阻止拖动时选中文本
-            e.preventDefault();
-          }}
-        >
+      <span className={styles.curTime}>{timeFormat(currentTime)}</span>
+      <section
+        className={styles.foot_center}
+        ref={playLineRef}
+        onClick={handleProgress}
+      >
+        <div className={styles.play_line}>
           <div
             className={styles.play_line_progress}
             style={{ width: `${(currentTime / duration) * 100}%` }}
@@ -326,8 +327,8 @@ const PlayerFoot: FC = () => {
             style={{ left: `${(currentTime / duration) * 100}%` }}
           ></span>
         </div>
-        <span className={styles.duration}>{timeFormat(duration)}</span>
       </section>
+      <span className={styles.duration}>{timeFormat(duration)}</span>
       <section className={styles.foot_right}>
         {playMode === "normal" ? (
           <svg
@@ -354,8 +355,13 @@ const PlayerFoot: FC = () => {
             <use xlinkHref="#icon-random"></use>
           </svg>
         )}
-        <svg className="icon" aria-hidden="true">
-          <use xlinkHref="#icon-download"></use>
+        <svg
+          className="icon"
+          aria-hidden="true"
+          style={{ width: "34px", height: "25px" }}
+          onClick={() => dispatch(setShow(!show))}
+        >
+          <use xlinkHref="#icon-list"></use>
         </svg>
         {mute ? (
           <svg
@@ -378,18 +384,14 @@ const PlayerFoot: FC = () => {
             <use xlinkHref="#icon-volume"></use>
           </svg>
         )}
-        <div className={styles.volumn}>
-          <div
-            className={styles.volumn_line}
-            ref={volumnLineRef}
-            onClick={(e) => {
-              handleVolumeNum(e);
-            }}
-            onMouseDown={(e) => {
-              // 阻止拖动时选中文本
-              e.preventDefault();
-            }}
-          >
+        <div
+          className={styles.volumn}
+          ref={volumnLineRef}
+          onClick={(e) => {
+            handleVolumeNum(e);
+          }}
+        >
+          <div className={styles.volumn_line}>
             <div
               className={styles.volumn_line_progress}
               style={{ width: `${mute ? 0 : volume * 100}%` }}

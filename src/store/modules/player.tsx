@@ -10,6 +10,7 @@ const playerStore = createSlice({
     currentMusic: {},
     volume: 0.3,
     playMode: "normal",
+    show: false,
   },
   reducers: {
     setIsPlay: (state, action) => {
@@ -32,6 +33,9 @@ const playerStore = createSlice({
     },
     setPlayMode: (state, action) => {
       state.playMode = action.payload;
+    },
+    setShow: (state, action) => {
+      state.show = action.payload;
     },
   },
 });
@@ -62,6 +66,7 @@ const {
   setCurrentTime,
   setVolume,
   setPlayMode,
+  setShow,
 } = playerStore.actions;
 export {
   getMusicList,
@@ -71,5 +76,6 @@ export {
   setDuration,
   setCurrentTime,
   setPlayMode,
+  setShow,
 };
 export default playerStore.reducer;
