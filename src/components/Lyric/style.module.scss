@@ -1,0 +1,116 @@
+.lyric_container{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: column;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 20px 0;
+    position: relative;
+    color: hsla(0,0%,88.2%,.8);
+    .song_info{
+        width: 100%;
+        height: 30%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 0.5rem;
+        font-size: 1rem;
+        flex-shrink: 0;
+        img{
+            height: 80%;
+            border-radius: 1rem;
+        }
+    }
+    
+}
+
+.lyric_wrapper {
+    min-width:300px;
+    margin: 0 auto;
+    height: 60%;
+    overflow-y: auto;
+    overflow-x: visible;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease;
+    box-sizing: border-box;
+    /* 隐藏滚动条但保留滚动功能 */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    &::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+}
+
+.lyric_line {
+    padding: 10px 0;
+    margin: 5px 0;
+    transition: all 0.5s ease;
+    opacity: 0.5;
+    user-select: none;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    transform: scale(0.9);
+    position: relative;
+    font-size: 1rem;
+    border-radius: 4px;
+    padding: 0 1rem;
+    white-space: nowrap;
+    &:hover {
+        opacity: 0.8;
+        padding: 0 1rem;
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+    
+    &:active {
+        transform: scale(0.95);
+        background-color: rgba(29, 185, 84, 0.1);
+    }
+}
+
+.active {
+    color: #1db954;
+    font-size: 1.2rem;
+    font-weight: bold;
+    opacity: 1;
+    transform: scale(1);
+    text-shadow: 0 0 5px rgba(29, 185, 84, 0.3);
+}
+
+.jumping {
+    animation: pulse 0.3s ease-in-out;
+    background-color: rgba(29, 185, 84, 0.15);
+    border-radius: 4px;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        background-color: rgba(29, 185, 84, 0.1);
+    }
+    50% {
+        transform: scale(1.05);
+        background-color: rgba(29, 185, 84, 0.2);
+    }
+    100% {
+        transform: scale(1);
+        background-color: rgba(29, 185, 84, 0.15);
+    }
+}
+
+.no_lyric {
+    font-size: 1rem;
+    padding: 20px 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}

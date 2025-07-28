@@ -1,0 +1,188 @@
+{
+  "musicList": [
+    {
+      "id": "1",
+      "name": "夜曲",
+      "singer": "周杰伦",
+      "poster": "周杰伦-夜曲.png",
+      "lyric": "周杰伦-夜曲.lrc",
+      "songUrl": "周杰伦-夜曲.mp3"
+    },
+    {
+      "id": "2",
+      "name": "晴天",
+      "singer": "周杰伦",
+      "poster": "周杰伦-晴天.png",
+      "lyric": "周杰伦-晴天.lrc",
+      "songUrl": "周杰伦-晴天.mp3"
+    },
+    {
+      "id": "3",
+      "name": "青花瓷",
+      "singer": "周杰伦",
+      "poster": "周杰伦-青花瓷.png",
+      "lyric": "周杰伦-青花瓷.lrc",
+      "songUrl": "周杰伦-青花瓷.mp3"
+    },
+    {
+      "id": "4",
+      "name": "刀马旦",
+      "singer": "周杰伦&李玟",
+      "poster": "李玟&周杰伦-刀马旦.png",
+      "lyric": "周杰伦&李玟-刀马旦.lrc",
+      "songUrl": "CoCo李玟&周杰伦-刀马旦.mp3"
+    },
+    {
+      "id": "5",
+      "name": "等一分钟",
+      "singer": "徐誉滕",
+      "poster": "徐誉滕-等一分钟.png",
+      "lyric": "徐誉滕-等一分钟.lrc",
+      "songUrl": "徐誉滕-等一分钟.flac"
+    },
+    {
+      "id": "6",
+      "name": "泡沫",
+      "singer": "邓紫棋",
+      "poster": "邓紫棋-泡沫.png",
+      "lyric": "邓紫棋-泡沫.lrc",
+      "songUrl": "G.E.M.邓紫棋-泡沫.mp3"
+    },
+    {
+      "id": "7",
+      "name": "唯一",
+      "singer": "邓紫棋",
+      "poster": "邓紫棋-唯一.png",
+      "lyric": "邓紫棋-唯一.lrc",
+      "songUrl": "G.E.M.邓紫棋-唯一.flac"
+    },
+    {
+      "id": "8",
+      "name": "喜欢你",
+      "singer": "邓紫棋",
+      "poster": "邓紫棋-喜欢你.png",
+      "lyric": "邓紫棋-喜欢你.lrc",
+      "songUrl": "邓紫棋-喜欢你.mp3"
+    },
+    {
+      "id": "9",
+      "name": "来自天堂的魔鬼",
+      "singer": "邓紫棋",
+      "poster": "邓紫棋-来自天堂的魔鬼.png",
+      "lyric": "邓紫棋-来自天堂的魔鬼.lrc",
+      "songUrl": "邓紫棋-来自天堂的魔鬼 (COVER版).mp3"
+    },
+    {
+      "id": "10",
+      "name": "桃花诺",
+      "singer": "邓紫棋",
+      "poster": "邓紫棋-桃花诺.png",
+      "lyric": "邓紫棋-桃花诺.lrc",
+      "songUrl": "G.E.M.邓紫棋-桃花诺.mp3"
+    },
+    {
+      "id": "11",
+      "name": "龙卷风",
+      "singer": "邓紫棋",
+      "poster": "邓紫棋-龙卷风.png",
+      "lyric": "邓紫棋-龙卷风.lrc",
+      "songUrl": "G.E.M.邓紫棋-龙卷风.mp3"
+    },
+    {
+      "id": "12",
+      "name": "黄昏",
+      "singer": "周传雄",
+      "poster": "周传雄-黄昏.png",
+      "lyric": "周传雄-黄昏.lrc",
+      "songUrl": "周传雄-黄昏.mp3"
+    },
+    {
+      "id": "13",
+      "name": "青花",
+      "singer": "周传雄",
+      "poster": "周传雄-青花.png",
+      "lyric": "周传雄-青花.lrc",
+      "songUrl": "周传雄-青花.mp3"
+    },
+    {
+      "id": "14",
+      "name": "蓝色土耳其",
+      "singer": "周传雄",
+      "poster": "周传雄-蓝色土耳其.png",
+      "lyric": "周传雄-蓝色土耳其.lrc",
+      "songUrl": "周传雄-蓝色土耳其.mp3"
+    },
+    {
+      "id": "15",
+      "name": "弱水三千",
+      "singer": "周传雄",
+      "poster": "周传雄-弱水三千.png",
+      "lyric": "周传雄-弱水三千.lrc",
+      "songUrl": "周传雄-弱水三千.mp3"
+    },
+    {
+      "id": "16",
+      "name": "冬天的秘密",
+      "singer": "周传雄",
+      "poster": "周传雄-冬天的秘密.png",
+      "lyric": "周传雄-冬天的秘密.lrc",
+      "songUrl": "周傳雄-冬天的秘密 (Live).mp3"
+    },
+    {
+      "id": "17",
+      "name": "成都",
+      "singer": "赵雷",
+      "poster": "赵雷-成都.png",
+      "lyric": "赵雷-成都.lrc",
+      "songUrl": "赵雷-成都.mp3"
+    },
+    {
+      "id": "18",
+      "name": "我记得",
+      "singer": "赵雷",
+      "poster": "赵雷-我记得.png",
+      "lyric": "赵雷-我记得.lrc",
+      "songUrl": "我记得 - 赵雷.mp3"
+    },
+    {
+      "id": "19",
+      "name": "消愁",
+      "singer": "毛不易",
+      "poster": "毛不易-消愁.png",
+      "lyric": "毛不易-消愁.lrc",
+      "songUrl": "毛不易 - 消愁.mp3"
+    },
+    {
+      "id": "20",
+      "name": "暮色回响",
+      "singer": "吉星出租",
+      "poster": "吉星出租-暮色回响.png",
+      "lyric": "吉星出租-暮色回响.lrc",
+      "songUrl": "吉星出租-暮色回响.mp3"
+    },
+    {
+      "id": "21",
+      "name": "暮色回响",
+      "singer": "张韶涵",
+      "poster": "张韶涵-暮色回响.png",
+      "lyric": "张韶涵-暮色回响.lrc",
+      "songUrl": "张韶涵 - 暮色回响.mp3"
+    },
+    {
+      "id": "22",
+      "name": "Alone",
+      "singer": "Alan Walker",
+      "poster": "Alan Walker-Alone.png",
+      "lyric": "Alan Walker-Alone.lrc",
+      "songUrl": "Alan Walker-Alone.flac"
+    },
+    {
+      "id": "23",
+      "name": "Faded",
+      "singer": "Alan Walker",
+      "poster": "Alan Walker-Faded.png",
+      "lyric": "Alan Wallker-Faded.lrc",
+      "songUrl": "Alan Walker-Faded.flac"
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+.playerfoot_container{
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5rem;
+    svg{
+        width: 36px;
+        height: 36px;
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
+        flex-shrink: 0;
+    }
+    svg:hover{
+        opacity: 0.8;
+    }
+    .foot_left,.foot_right{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 150px;
+        height: 100%;
+        gap: 1rem;
+        flex-shrink: 0;
+    }
+    .foot_center{
+        color: #e6e6e6;
+        display: flex;
+        flex: 1;
+        justify-content: center;
+        align-items: center;
+        margin: 0 2rem;
+        .curTime,.duration{
+            font-size: 14px;
+            width: 40px;
+        }
+        .play_line{
+            width: 100%;
+            height: 2px;
+            margin: 0 5px;
+            background-color: hsla(0,0%,88.2%,.8);
+            display: flex;
+            align-items: center;
+            flex: 1;
+            position: relative;
+            border-radius: 2px;
+            cursor: pointer;
+            &_progress{
+                height: 2px;
+                background-color: #fff;
+            }
+            &_dot{
+                position: absolute;
+                top: -5px;
+                width: 10px;
+                height: 10px;
+                border-radius: 5px;
+                background-color: #fff;
+            }
+        }
+        
+    }
+    .foot_right{
+        width: 250px;
+        .volumn{
+            width: 40%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            &_line{
+                width: 100%;
+                height: 2px;
+                background-color: #aaa;
+                border-radius: 1px;
+                transform: translateX(-10px);
+                position: relative;
+                cursor: pointer;
+                &_progress{
+                    height: 2px;
+                    background-color: #e6e6e6;
+                    display: flex;
+                    justify-content: flex-end;
+                    overflow: visible;
+                }
+                &_dot{
+                    position: absolute;
+                    top: -5px;
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 5px;
+                    background-color: #fff;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
