@@ -8,19 +8,17 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "serve": "node server.js"
+    "server": "node server.js"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
     "axios": "^1.11.0",
     "classnames": "^2.5.1",
     "cors": "^2.8.5",
-    "dayjs": "^1.11.13",
     "express": "^4.21.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-redux": "^9.2.0",
-    "react-router-dom": "^7.7.1",
     "redux-persist": "^6.0.0",
     "sass": "^1.89.2",
     "uuid": "^11.1.0"

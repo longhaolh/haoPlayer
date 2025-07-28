@@ -1,11 +1,13 @@
 # HaoPlayer - 在线音乐播放器
 
-一个使用React和TypeScript构建的在线音乐播放器，支持通过URL方式引用音乐、歌词和封面图资源。
+- 歌曲来源:[https://tonzhon.com/](https://tonzhon.com/)
+- 歌词来源:豆包AI、[https://tonzhon.com/](https://tonzhon.com/)、[歌词网](https://zh.followlyrics.com/)
+- 歌曲封面:豆包AI
+- 声明:歌曲仅供学习交流 如有侵权 联系[haosion@hotmail.com](haosion@hotmail.com)删除
 
 ## 效果演示
 
-
-
+[【React19+Redux(含持久化)实战项目-浩音乐】](https://www.bilibili.com/video/BV1JG8HzSEJY/?share_source=copy_web&vd_source=f5ba953af0ca76ef903f85ddff96e791)
 
 ## 如何运行
 
@@ -18,7 +20,7 @@ npm install
 ### 2. 启动资源服务器
 
 ```bash
-npm run serve
+npm run server
 ```
 
 资源服务器会在 http://localhost:3000 启动，提供以下资源：
