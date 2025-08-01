@@ -29,7 +29,7 @@ const PlayerFoot: FC = () => {
     playMode,
     show,
   } = useSelector((state) => state.player);
-
+  // 格式化时间
   const timeFormat = (time: number) => {
     return `${
       Math.floor(time / 60) < 10
@@ -135,7 +135,7 @@ const PlayerFoot: FC = () => {
         current = currentMusic;
       } else if (mode === "random") {
         // 随机播放
-        //   @ts-expect-error 忽略ts错误
+        // @ts-expect-error 忽略ts错误
         const arr = musicList.filter((item) => item.id !== currentMusic.id);
         current = arr[Math.floor(Math.random() * arr.length)];
       } else {
@@ -409,7 +409,7 @@ const PlayerFoot: FC = () => {
           </div>
         </div>
       </section>
-      <audio id="audio" preload="auto"></audio>
+      <audio id="audio" preload="auto" crossOrigin="anonymous"></audio>
     </main>
   );
 };
