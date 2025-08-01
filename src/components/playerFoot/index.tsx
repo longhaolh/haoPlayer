@@ -117,6 +117,7 @@ const PlayerFoot: FC = () => {
     if (isPlay) {
       audio.pause();
     } else {
+      audio.currentTime = currentTime;
       audio.play();
     }
     dispatch(setIsPlay(!isPlay));
