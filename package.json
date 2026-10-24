@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
+    "antd-mobile": "^5.43.0",
     "axios": "^1.11.0",
     "classnames": "^2.5.1",
     "cors": "^2.8.5",

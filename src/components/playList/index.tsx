@@ -1,12 +1,12 @@
 import { type FC } from "react";
 import styles from "./style.module.scss";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "@/store";
 import { setCurrentMusic, setIsPlay } from "@/store/modules/player";
 import "@/assets/iconfonts/iconfont.js";
 
 const PlayList: FC = () => {
-  const dispatch = useDispatch();
-  const { show, musicList, currentMusic, isPlay } = useSelector(
+  const dispatch = useAppDispatch();
+  const { show, musicList, currentMusic, isPlay } = useAppSelector(
     (state) => state.player
   );
   const getDuration = (id: string) => {

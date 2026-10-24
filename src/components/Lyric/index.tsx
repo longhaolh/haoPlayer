@@ -1,6 +1,6 @@
 import { type FC, useEffect, useState, useRef, useCallback } from "react";
 import styles from './style.module.scss';
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "@/store";
 import { setCurrentTime, setIsPlay } from "@/store/modules/player";
 
 interface LyricLine {
@@ -19,7 +19,7 @@ const AudioVisualizer: FC = () => {
     const audioContextRef = useRef<AudioContext | null>(null);
     const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
     const isConnectedRef = useRef<boolean>(false);
-    const { isPlay } = useSelector((state) => state.player);
+    const { isPlay } = useAppSelector((state) => state.player);
     
     // 初始化音频可视化
     useEffect(() => {
@@ -41,7 +41,7 @@ const AudioVisualizer: FC = () => {
         
         // 创建随机数据数组用于视觉效果
         if (!randomDataRef.current) {
-            randomDataRef.current = Uint8Array.from(new Uint8Array(120), (v, k) => k);
+            randomDataRef.current = Uint8Array.from(new Uint8Array(120), (_v, k) => k);
             // 打乱数组顺序
             randomDataRef.current.sort(() => Math.random() - 0.5);
         }
@@ -130,7 +130,7 @@ const AudioVisualizer: FC = () => {
             animationRef.current = requestAnimationFrame(renderFrame);
             
             // 获取频率数据
-            analyserRef.current!.getByteFrequencyData(dataArrayRef.current!);
+            analyserRef.current!.getByteFrequencyData(dataArrayRef.current! as unknown as Uint8Array<ArrayBuffer>);
             
             // 处理数据
             const bData: number[] = [];
@@ -203,13 +203,13 @@ const AudioVisualizer: FC = () => {
     return <canvas ref={canvasRef} className={styles.audio_visualizer} />;
 };
 
-const Lyric: FC<{ lyric: string, currentTime?: number }> = ({ lyric, currentTime = 0 }) => {
-    const dispatch = useDispatch();
+const Lyric: FC<{ lyric?: string, currentTime?: number }> = ({ lyric, currentTime = 0 }) => {
+    const dispatch = useAppDispatch();
     const [parsedLyrics, setParsedLyrics] = useState<LyricLine[]>([]);
     const [currentLineIndex, setCurrentLineIndex] = useState<number>(0);
     const [isJumping, setIsJumping] = useState<boolean>(false);
     const lyricContainerRef = useRef<HTMLDivElement>(null);
-    const { currentMusic } = useSelector((state) => state.player);
+    const { currentMusic } = useAppSelector((state) => state.player);
     // 解析LRC格式歌词
     useEffect(() => {
         if (!lyric) return;

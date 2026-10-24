@@ -1,13 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+
+export interface Music {
+  id: string;
+  name: string;
+  singer: string;
+  songUrl: string;
+  posterUrl?: string;
+  lyric?: string;
+}
+
 const playerStore = createSlice({
   name: "player",
   initialState: {
     isPlay: false,
     currentTime: 0,
     duration: 0,
-    musicList: [],
-    currentMusic: {},
+    musicList: [] as Music[],
+    currentMusic: {} as Music,
     volume: 0.3,
     playMode: "normal",
     show: false,

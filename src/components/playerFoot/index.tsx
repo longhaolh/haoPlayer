@@ -1,6 +1,7 @@
 import { type FC, useState, useEffect, useRef } from "react";
 import styles from "./style.module.scss";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "@/store";
+import type { Music } from "@/store/modules/player";
 import "@/assets/iconfonts/iconfont.js";
 import {
   setIsPlay,
@@ -12,7 +13,7 @@ import {
   setShow,
 } from "@/store/modules/player";
 const PlayerFoot: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // 定义DOM引用
   const playLineRef = useRef<HTMLDivElement>(null);
@@ -28,7 +29,7 @@ const PlayerFoot: FC = () => {
     duration,
     playMode,
     show,
-  } = useSelector((state) => state.player);
+  } = useAppSelector((state) => state.player);
   // 格式化时间
   const timeFormat = (time: number) => {
     return `${
@@ -126,7 +127,7 @@ const PlayerFoot: FC = () => {
    * 切换歌曲
    */
   const handelChangeMusic = (type: string) => {
-    let current = {};
+    let current: Music = currentMusic;
     const mode = playMode; // 使用正确的变量名
     // 上一首
     if (type === "prev") {
@@ -135,13 +136,11 @@ const PlayerFoot: FC = () => {
         current = currentMusic;
       } else if (mode === "random") {
         // 随机播放
-        // @ts-expect-error 忽略ts错误
         const arr = musicList.filter((item) => item.id !== currentMusic.id);
         current = arr[Math.floor(Math.random() * arr.length)];
       } else {
         // 普通模式 顺序播放
         const index = musicList.findIndex(
-          //   @ts-expect-error 忽略ts错误
           (item) => item.id === currentMusic.id
         );
         if (index === 0) {
@@ -156,13 +155,11 @@ const PlayerFoot: FC = () => {
         current = currentMusic;
       } else if (mode === "random") {
         // 随机播放
-        //   @ts-expect-error 忽略ts错误
         const arr = musicList.filter((item) => item.id !== currentMusic.id);
         current = arr[Math.floor(Math.random() * arr.length)];
       } else {
         // 普通模式 顺序播放
         const index = musicList.findIndex(
-          //   @ts-expect-error 忽略ts错误
           (item) => item.id === currentMusic.id
         );
         if (index === musicList.length - 1) {
@@ -179,7 +176,6 @@ const PlayerFoot: FC = () => {
 
     // 然后更新音频元素
     const audio = document.getElementById("audio") as HTMLAudioElement;
-    // @ts-expect-error 忽略ts错误
     audio.src = current.songUrl;
 
     // 移除之前可能存在的事件监听器，避免重复
