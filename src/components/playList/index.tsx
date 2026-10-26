@@ -34,7 +34,7 @@ const PlayList: FC = () => {
   };
 
   return (
-    <main className={styles.playlist} style={{ width: show ? "60%" : "0" }}>
+    <main className={styles.playlist} style={{ width: show ? "var(--pl-w)" : "0" }}>
       <div className={styles.header}>
         <h3>播放列表</h3>
         <span className={styles.count}>共{musicList.length}首</span>

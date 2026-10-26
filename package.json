@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "server": "node server.js"
+    "server": "node server.js",
+    "build:site": "node scripts/deploy-build.mjs"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",

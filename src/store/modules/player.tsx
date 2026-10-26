@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+// dev: resource server (server.js); deploy: sub-path like /haoplayer
+const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:3000";
+
 export interface Music {
   id: string;
   name: string;
@@ -54,14 +57,20 @@ const getMusicList = () => {
   // @ts-expect-error 忽略ts错误
   return async (dispatch, getState) => {
     try {
-      const res = await axios.get("http://localhost:3000/getMusicList");
+      const res = await axios.get(`${API_BASE}/getMusicList.json`);
       if (res.data.length > 0) {
         dispatch(setMusicList(res.data));
-        // 只有当没有当前音乐时才设置第一首为当前音乐
+        // 用最新列表数据校准持久化的当前歌曲（歌词/资源地址可能已更新），
+        // 匹配不到（如换歌或删除）则回退第一首
         const state = getState();
-        if (!state.player.currentMusic || !state.player.currentMusic.id) {
-          dispatch(setCurrentMusic(res.data[0]));
-        }
+        const persisted = state.player.currentMusic;
+        const fresh =
+          persisted && persisted.name
+            ? res.data.find(
+                (m: any) => m.name === persisted.name && m.singer === persisted.singer
+              )
+            : null;
+        dispatch(setCurrentMusic(fresh || res.data[0]));
       }
     } catch (error) {
       console.error("获取音乐列表失败:", error);

@@ -144,20 +144,30 @@ const AudioVisualizer: FC = () => {
             ctx.fillStyle = '#F35D26'; // 使用主题色
             ctx.save();
             ctx.translate(canvas.width / 2, canvas.height / 2);
+
+            // 条形起始半径 = 唱片封面实际半径（换算成 canvas 像素）：
+            // 这样声波紧贴封面外沿，既不会压进唱片图里，也不会顶到画布边缘被平切
+            const posterEl = canvas.parentElement;
+            const posterR =
+                posterEl && canvas.clientWidth
+                    ? (canvas.width / 2) * (posterEl.clientWidth / canvas.clientWidth)
+                    : canvas.width * 0.35;
+            const barStartR = posterR + 1;
+            const BAR_MAX = 20; // 条形最大长度（canvas 像素）
             
             bData.forEach((value, index) => {
                 ctx.save();
                 ctx.rotate(angle * index);
                 ctx.beginPath();
-                const h = (value / 256) * 30; // 调整条形高度
-                
+                const h = (value / 256) * BAR_MAX; // 条形长度随音量变化
+
                 // 检查是否支持roundRect方法
                 if (ctx.roundRect) {
-                    ctx.roundRect(-2, 70, 2, h < 2 ? 2 : h, 2); // 调整大小和位置
+                    ctx.roundRect(-2, barStartR, 2, h < 2 ? 2 : h, 2); // 调整大小和位置
                 } else {
                     // 兼容性处理：手动绘制圆角矩形
                     const x = -2;
-                    const y = 70;
+                    const y = barStartR;
                     const width = 2;
                     const height = h < 2 ? 2 : h;
                     const radius = 2;
@@ -209,6 +219,7 @@ const Lyric: FC<{ lyric?: string, currentTime?: number }> = ({ lyric, currentTim
     const [currentLineIndex, setCurrentLineIndex] = useState<number>(0);
     const [isJumping, setIsJumping] = useState<boolean>(false);
     const lyricContainerRef = useRef<HTMLDivElement>(null);
+    const activeLineRef = useRef<HTMLDivElement | null>(null);
     const { currentMusic } = useAppSelector((state) => state.player);
     // 解析LRC格式歌词
     useEffect(() => {
@@ -310,6 +321,29 @@ const Lyric: FC<{ lyric?: string, currentTime?: number }> = ({ lyric, currentTim
             setTimeout(scrollToActiveLine, 100);
         }
     }, [parsedLyrics]);
+
+    // 逐字着色：rAF 读取音频实时进度，把当前行的填充比例写进 CSS 变量 --p
+    // （直接改 DOM 样式，不走 React 状态，避免每帧重渲染整张歌单）
+    useEffect(() => {
+        let raf: number | null = null;
+        const tick = () => {
+            const el = activeLineRef.current;
+            const audio = document.getElementById("audio") as HTMLAudioElement;
+            const line = parsedLyrics[currentLineIndex];
+            if (el && audio && line) {
+                const start = line.time;
+                const next = parsedLyrics[currentLineIndex + 1];
+                const dur = Math.max((next ? next.time : start + 4) - start, 0.4);
+                const p = Math.min(Math.max((audio.currentTime - start) / dur, 0), 1);
+                el.style.setProperty("--p", (p * 100).toFixed(2) + "%");
+            }
+            raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
+        return () => {
+            if (raf) cancelAnimationFrame(raf);
+        };
+    }, [parsedLyrics, currentLineIndex]);
     /**
      * 点击歌词跳转到对应时间点
      * @param time 歌词时间点（秒）
@@ -345,6 +379,8 @@ const Lyric: FC<{ lyric?: string, currentTime?: number }> = ({ lyric, currentTim
             <img src={currentMusic.posterUrl} alt={currentMusic.name} />
             <AudioVisualizer />
           </div>
+        </section>
+        <div className={styles.lyric_wrapper} ref={lyricContainerRef}>
           <div className={styles.lyric_title}>
             <p>
               歌曲名:<span>{currentMusic.name}</span>
@@ -353,13 +389,18 @@ const Lyric: FC<{ lyric?: string, currentTime?: number }> = ({ lyric, currentTim
               歌手:<span>{currentMusic.singer}</span>
             </p>
           </div>
-        </section>
-        <div className={styles.lyric_wrapper} ref={lyricContainerRef}>
           {parsedLyrics.length > 0 ? (
             <>
               {parsedLyrics.map((line, index) => (
                 <div
                   key={`${line.time}-${index}`}
+                  ref={
+                    index === currentLineIndex
+                      ? (node) => {
+                          activeLineRef.current = node;
+                        }
+                      : undefined
+                  }
                   className={`${styles.lyric_line} ${
                     index === currentLineIndex ? styles.active : ""
                   } ${

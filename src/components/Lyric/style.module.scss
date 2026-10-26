@@ -3,28 +3,32 @@
     height: 100%;
     overflow: hidden;
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    justify-content: flex-start;
+    align-items: center;
     flex-direction: column;
+    /* 声波环从封面边缘向下探出约 48px，固定 52px 让滚动区首行（标题）不被遮挡 */
+    gap: 52px;
     font-size: 14px;
     line-height: 1.5;
-    padding: 20px 0;
+    /* 顶部留白要让开声波环外扩部分（桌面约 32px），否则环的上半圈会被容器裁平 */
+    padding: clamp(34px, 4vh, 38px) 0;
     position: relative;
     color: hsla(0,0%,88.2%,.8);
     .song_info{
         width: 100%;
-        height: 35%;
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-direction: column;
+        gap: 8px;
         font-size: 1rem;
         flex-shrink: 0;
-        margin-top: 2rem;
         .poster_container {
             position: relative;
-            width: 200px;
-            height: 200px;
+            /* 随视口高度自适应，矮窗口下自动缩小，避免挤压歌词区 */
+            width: clamp(110px, 28vh, 200px);
+            height: clamp(110px, 28vh, 200px);
+            flex-shrink: 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -39,14 +43,22 @@
             
             .audio_visualizer {
                 position: absolute;
-                top: -45px;
-                left: -45px;
-                width: 290px;
-                height: 290px;
+                top: 50%;
+                left: 50%;
+                width: calc(100% + 100px);
+                height: calc(100% + 100px);
+                transform: translate(-50%, -50%);
                 z-index: 2;
                 pointer-events: none;
             }
         }
+    }
+    .lyric_title{
+        position: relative;
+        z-index: 3;   /* 文字永远在声波纹之上 */
+        flex-shrink: 0;
+        text-align: center;
+        margin-bottom: 10px;
     }
     
 }
@@ -59,9 +71,12 @@
     }
 }
 .lyric_wrapper {
-    min-width:300px;
+    width: 100%;
+    min-width: 300px;
     margin: 0 auto;
-    height: 60%;
+    /* 自适应：占满歌曲信息之外的剩余高度，内部滚动而不是被压缩 */
+    flex: 1 1 auto;
+    min-height: 0;
     overflow-y: auto;
     overflow-x: visible;
     display: flex;
@@ -69,6 +84,11 @@
     align-items: center;
     transition: transform 0.3s ease;
     box-sizing: border-box;
+    /* 上下边缘渐隐淡出，替代硬截断；padding 与淡出带等高，
+       保证首行（标题）静止在顶部、末行滚到底时都不被淡出带压住 */
+    mask-image: linear-gradient(180deg, transparent 0, #000 24px, #000 calc(100% - 56px), transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 24px, #000 calc(100% - 56px), transparent 100%);
+    padding: 24px 0 56px;
     /* 隐藏滚动条但保留滚动功能 */
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
@@ -80,6 +100,7 @@
 .lyric_line {
     padding: 10px 0;
     margin: 5px 0;
+    flex-shrink: 0;
     transition: all 0.5s ease;
     opacity: 0.5;
     user-select: none;
@@ -106,12 +127,28 @@
 }
 
 .active {
-    color: #F35D26;
     font-size: 1.2rem;
     font-weight: bold;
     opacity: 1;
     transform: scale(1);
-    text-shadow: 0 0 5px rgba(29, 185, 84, 0.3);
+    /* 逐字着色：已唱部分主题橙、未唱部分半透明白，分界点由 --p 推进（rAF 注入） */
+    background-image: linear-gradient(
+        90deg,
+        #F35D26 0 var(--p, 0%),
+        rgba(255, 255, 255, 0.55) var(--p, 0%) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+/* 老浏览器不支持文字裁剪时，退回整行橙色，避免文字不可见 */
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+    .active {
+        color: #F35D26;
+        -webkit-text-fill-color: currentColor;
+    }
 }
 
 .jumping {
@@ -142,4 +179,32 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+}
+
+/* ── 移动端适配：空间有限，缩小封面/声波/间距/淡出带，把高度让给歌词 ── */
+@media (max-width: 767px) {
+    .lyric_container {
+        gap: 30px;
+        padding: 30px 0 8px;
+        .song_info .poster_container {
+            width: clamp(96px, 18vh, 140px);
+            height: clamp(96px, 18vh, 140px);
+        }
+        .song_info .poster_container .audio_visualizer {
+            width: calc(100% + 60px);
+            height: calc(100% + 60px);
+        }
+    }
+    .lyric_wrapper {
+        mask-image: linear-gradient(180deg, transparent 0, #000 16px, #000 calc(100% - 36px), transparent 100%);
+        -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 16px, #000 calc(100% - 36px), transparent 100%);
+        padding: 16px 0 36px;
+    }
+    .lyric_line {
+        font-size: .92rem;
+        padding: 0 .6rem;
+    }
+    .active {
+        font-size: 1.08rem;
+    }
 }

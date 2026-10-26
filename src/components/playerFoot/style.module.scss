@@ -111,3 +111,65 @@
         }
     }
 }
+
+/* ── 移动端：grid 三行布局（进度条通栏 / 起止时间两端下方 / 播放与功能按钮） ── */
+@media (max-width: 767px) {
+    .playerfoot_container {
+        height: 122px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto auto;
+        align-content: space-evenly;
+        padding: 4px 14px 8px;
+        svg {
+            width: 30px;
+            height: 30px;
+        }
+        .foot_center {
+            grid-column: 1 / -1;
+            grid-row: 1;
+            width: 100%;
+            height: 1.4rem;
+        }
+        .curTime {
+            grid-column: 1;
+            grid-row: 2;
+            justify-self: start;
+            width: auto;
+            margin: 0 0 0 2px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.55);
+        }
+        .duration {
+            grid-column: 2;
+            grid-row: 2;
+            justify-self: end;
+            width: auto;
+            margin: 0 2px 0 0;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.55);
+        }
+        .foot_left {
+            grid-column: 1;
+            grid-row: 3;
+            width: auto;
+            height: auto;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 24px;
+        }
+        .foot_right {
+            grid-column: 2;
+            grid-row: 3;
+            width: auto;
+            height: auto;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            .volumn {
+                display: none;   /* 小屏隐藏音量滑条，音量图标保留 */
+            }
+        }
+    }
+}

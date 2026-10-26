@@ -18,6 +18,8 @@ const PlayerFoot: FC = () => {
   // 定义DOM引用
   const playLineRef = useRef<HTMLDivElement>(null);
   const volumnLineRef = useRef<HTMLDivElement>(null);
+  // 页面首次加载不自动播放（避免被嵌入预览时突然出声）
+  const firstAutoPlayRef = useRef(true);
   const [mute, setMute] = useState(false);
 
   const {
@@ -85,11 +87,13 @@ const PlayerFoot: FC = () => {
         url.replace(/^https?:\/\//, "").replace(/\/$/, "");
 
       // 只有当音频源真正改变时才更新
+      const isFirstLoad = firstAutoPlayRef.current;
+      firstAutoPlayRef.current = false;
       if (!currentSrc || normalizeUrl(currentSrc) !== normalizeUrl(newSrc)) {
         audio.src = currentMusic.songUrl;
 
-        // 如果当前是播放状态，则自动播放新歌曲
-        if (isPlay) {
+        // 如果当前是播放状态，则自动播放新歌曲（首次加载除外：关掉自动播放）
+        if (isPlay && !isFirstLoad) {
           // 等待音频加载完成后播放
           const handleCanPlay = () => {
             audio.play().catch((err) => {
@@ -100,6 +104,8 @@ const PlayerFoot: FC = () => {
           };
 
           audio.addEventListener("canplay", handleCanPlay);
+        } else if (isPlay && isFirstLoad) {
+          dispatch(setIsPlay(false));
         }
       }
     }
@@ -280,7 +286,7 @@ const PlayerFoot: FC = () => {
           <use xlinkHref="#icon-prev"></use>
         </svg>
         {isPlay ? (
-          <svg className="icon" aria-hidden="true" onClick={handelPlay}>
+          <svg className="icon" style={{ width: "38px", height: "38px" }} aria-hidden="true" onClick={handelPlay}>
             <use xlinkHref="#icon-pause"></use>
           </svg>
         ) : (

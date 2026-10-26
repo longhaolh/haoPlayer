@@ -33,7 +33,7 @@ const processedMusicList = musicData.musicList.map(item => {
 });
 
 // 获取音乐列表
-app.get('/getMusicList', (req, res) => {
+app.get(['/getMusicList', '/getMusicList.json'], (req, res) => {
   res.json(processedMusicList);
 });
 

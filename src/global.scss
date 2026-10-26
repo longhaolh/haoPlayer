@@ -4,3 +4,11 @@
   list-style: none;
   box-sizing: border-box;
 }
+
+html,
+body {
+  height: 100%;
+  overflow: hidden; /* 播放器整页固定，禁止被顶到状态栏下 */
+  overscroll-behavior: none;
+  background: #0d0f1a; /* 深色底：模糊封面边缘半透明处不透白 */
+}

@@ -3,7 +3,7 @@
 - 歌曲来源:[https://tonzhon.com/](https://tonzhon.com/)
 - 歌词来源:豆包AI、[https://tonzhon.com/](https://tonzhon.com/)、[歌词网](https://zh.followlyrics.com/)
 - 歌曲封面:豆包AI
-- 声明:歌曲仅供学习交流 如有侵权 联系[haosion@hotmail.com](haosion@hotmail.com)删除
+- 声明:歌曲仅供学习交流 如有侵权 联系[1522024324@qq.com](1522024324@qq.com)删除
 
 ## 效果演示
 

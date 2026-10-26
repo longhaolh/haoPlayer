@@ -1,4 +1,5 @@
 .playlist {
+  --pl-w: 60%;
   height: 100%;
   z-index: 999;
   transition: all .3s;
@@ -170,5 +171,19 @@
 
   40% {
     transform: scaleY(1);
+  }
+}
+
+/* ── 移动端：歌曲列表展开时全屏显示，避免窄屏内容展示不全 ── */
+@media (max-width: 767px) {
+  .playlist {
+    --pl-w: 100%;
+
+    .header {
+      padding: 16px;
+    }
+    .list_container {
+      padding: 0 8px;
+    }
   }
 }

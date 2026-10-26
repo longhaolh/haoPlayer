@@ -4,12 +4,16 @@ import logo from "@/assets/images/logo.png";
 import PlayerContet from "@/components/playerContet";
 import PlayerFoot from "@/components/playerFoot";
 import logoText from "@/assets/images/logoText.png";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMusicList } from "@/store/modules/player";
 
 const Home: FC = () => {
   const dispatch = useDispatch();
+  // 移动端（<=767px）不渲染 header，顶部空间由内容区安全区 padding 提供
+  const [isMobile] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches
+  );
   // @ts-expect-error 忽略ts错误
   const currentMusic = useSelector((state) => state.player.currentMusic);
   // @ts-expect-error 忽略ts错误
@@ -35,14 +39,16 @@ const Home: FC = () => {
   }, [dispatch, musicList, currentMusic]);
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.header_left}>
-          <div className={styles.logo}>
-            <img src={logo} alt="logo" />
-            <img src={logoText} alt="logoText" title="只听好音乐" />
+      {!isMobile && (
+        <header className={styles.header}>
+          <div className={styles.header_left}>
+            <div className={styles.logo}>
+              <img src={logo} alt="logo" />
+              <img src={logoText} alt="logoText" title="只听好音乐" />
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
+      )}
       <section className={styles.content}>
         <PlayerContet />
       </section>
